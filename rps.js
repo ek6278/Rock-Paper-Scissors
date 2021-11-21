@@ -1,23 +1,50 @@
-let options;
-let message;
+const btn = document.querySelectorAll('div.optButton button');
+const score = document.querySelector("#score");
+const rtButton = document.querySelector('#rtBtn')
+const scoreCount = document.createElement('div');
 
+let options =['rock','paper','scissors'];
+let message;
+let playerScore = 0;
+let compScore = 0;
+score.textContent = "Pick a sign to start the game";
+
+btn.forEach(button => {button.addEventListener('click', playerSelection)
+});
+rtButton.addEventListener('click', () => {
+    resetGame()
+});
+
+function resetGame(){
+    playerScore = 0;
+    compScore = 0;
+    score.textContent = "Start Game";
+    scoreCount.textContent = "The score is " + playerScore + " (You) to " + compScore + " (Computer)";
+    score.appendChild(scoreCount);
+    btn.forEach(button => {button.addEventListener('click', playerSelection)
+}
+);
+}
 function computerPlay() {
-    options = ['rock','paper','scissors'];
     let number = Math.floor(Math.random()*options.length);
+   // console.log(number);
     return options[number];
 }
 
-function playerSelection()
+function playerSelection(e)
 {
-    return window.prompt("choose a sign").toLowerCase(); //returns selection and converts into lowercase
-
+    let playerSign = (e.target.id);
+    playerChoice=e.target.textContent;
+    playRound(playerSign, computerPlay())
 }
 
+
 function playRound(playerChoice, compChoice) {
-let result;
+let result ="";
+
 console.log(playerChoice);
 
-if (playerChoice == 'rock')
+if (playerChoice == 0)
 {
     if (compChoice == options[0])
     {
@@ -26,22 +53,26 @@ if (playerChoice == 'rock')
     else if (compChoice== options[1])
     {
         result = "You lost!";
+        compScore++;
     }
     else if (compChoice==options[2])
     {
         result = "You won!";
+        playerScore++;
     }
 }
 
-if (playerChoice == 'scissors')
+if (playerChoice == 1)
 {
     if (compChoice == options[0])
     {   
     result = "You lost!";
+    compScore++;
     }
     else if (compChoice== options[1])
     {
     result = "You won!";
+    playerScore++;
     }
     else if (compChoice==options[2])
     {
@@ -49,11 +80,12 @@ if (playerChoice == 'scissors')
     }
 }
 
-if (playerChoice == 'paper')
+if (playerChoice == 2)
 {
     if (compChoice == options[0])
     {
     result = "You won!";
+    playerScore++;
     }
     else if (compChoice== options[1])
     {
@@ -62,26 +94,38 @@ if (playerChoice == 'paper')
     else if (compChoice==options[2])
     {
     result = "You lost!";
+    compScore++;
     }
 }
 
-return result + " The computer chose " + compChoice;
+if (playerScore < 5 && compScore < 5)
+{
+score.textContent =  result + " The computer chose " + compChoice + ".";
+scoreCount.textContent = "The score is " + playerScore + " (You) to " + compScore + " (Computer)";
+score.appendChild(scoreCount);
 }
 
-function howManyRounds()
-{
-  let numberOfRounds = window.prompt("How many rounds of RPS would you like to play?");
-for (i = 0; i < numberOfRounds; i++)
-{
-game();
-} 
+else if (playerScore == 5){
+    score.textContent = "You won!";
+    scoreCount.textContent = "Final Score: " +  playerScore + " (You) to " + compScore + " (Computer)";
+    score.appendChild(scoreCount);
+    btn.forEach(button => {button.removeEventListener('click', playerSelection)
+});
 }
+else {
+    score.textContent = "You lost!";
+    scoreCount.textContent = "Final Score: " +  playerScore + " (You) to " + compScore + " (Computer)";
+    score.appendChild(scoreCount);
+    btn.forEach(button => {button.removeEventListener('click', playerSelection);
+});
+}
+}
+
 
 function game()
 {
 let message = playRound(playerSelection(), computerPlay());
-let playerScore = 0;
-let compScore = 0;
+
 
 if (message.includes("won"))
 {
@@ -97,4 +141,3 @@ else if (message.includes("lost"))
 console.log(message + ". The score is: " + playerScore + " (You) to " + compScore + " (Computer)");
 }
 
-howManyRounds();

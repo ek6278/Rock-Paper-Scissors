@@ -1,0 +1,23 @@
+.body {
+    background-color: aqua;
+}
+
+.height {
+    margin-top: 60px;
+
+}
+
+.rstButton { 
+    
+    display: flex;
+    align-items: left;
+    margin-top: 100px;
+    position: absolute;
+}
+
+.optButton {
+    display:flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 300px;
+}
